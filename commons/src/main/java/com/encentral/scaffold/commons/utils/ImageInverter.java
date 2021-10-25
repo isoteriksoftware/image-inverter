@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ImageInverter {
-    public boolean invertImage(File source, File destination) {
+    public static boolean invertImage(File source, File destination) {
         if (source == null)
             throw new NullPointerException("Source file should not be null!");
 

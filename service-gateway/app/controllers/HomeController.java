@@ -3,6 +3,7 @@ package controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.bval.jsr.ApacheValidationProvider;
 import org.hibernate.validator.HibernateValidator;
+import play.api.Play;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
