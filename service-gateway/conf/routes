@@ -18,6 +18,4 @@ GET            /error                                                          c
 GET            /error/                                                         controllers.HomeController.error()
 GET            /api-docs                                                       controllers.HomeController.api()
 
-POST           /image                                                          controllers.ImageInverterController.invertImage()
-GET            /image                                                          controllers.ImageInverterController.getAllImages()
-GET            /image/:imageFileName                                           controllers.ImageInverterController.getImage(imageFileName: String)
+->             /image/                                                          image.Routes

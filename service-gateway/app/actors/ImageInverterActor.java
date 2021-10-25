@@ -4,6 +4,9 @@ import akka.actor.AbstractActor;
 import akka.actor.Props;
 import com.encentral.scaffold.commons.utils.ImageInverter;
 
+/**
+ * An actor responsible for handling image file inversion concurrently.
+ */
 public class ImageInverterActor extends AbstractActor {
     public static Props getProps() {
         return Props.create(ImageInverterActor.class);

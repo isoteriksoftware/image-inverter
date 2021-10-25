@@ -6,6 +6,14 @@ import java.io.File;
 import java.io.IOException;
 
 public class ImageInverter {
+    /**
+     * Inverts an image file by changing its RGB colors.
+     * <strong>Note: This method does not validate the type of file provided. The provided file should be validated
+     * as a valid image file before being passed to this method</strong>
+     * @param source the target image file to invert (must be an image file)
+     * @param destination the destination file for storing the inverted image
+     * @return true if the image was successfully inverted without any errors. false otherwise
+     */
     public static boolean invertImage(File source, File destination) {
         if (source == null)
             throw new NullPointerException("Source file should not be null!");
@@ -24,6 +32,10 @@ public class ImageInverter {
             width = bufferedImage.getWidth();
             height = bufferedImage.getHeight();
 
+            // loop and modify the color of each pixel
+            // Red is changed to Green.
+            // Green is changed to Blue.
+            // Blue is changed to Red.
             for (int y = 0; y < height; y++) {
                 for (int x = 0; x < width; x++) {
                     int rgb = bufferedImage.getRGB(x, y);

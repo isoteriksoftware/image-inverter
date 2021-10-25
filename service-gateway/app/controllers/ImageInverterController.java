@@ -9,6 +9,7 @@ import static akka.pattern.Patterns.ask;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.util.Json;
 import play.api.Play;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -40,7 +41,10 @@ public class ImageInverterController extends Controller {
 
     @ApiOperation(value = "Upload and invert an image")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, response = SuccessResponse.class, message = "Image inverted successfully")
+            @ApiResponse(code = 200, response = SuccessResponse.class, message = "Image inverted successfully"),
+            @ApiResponse(code = 400, message = "No image file provided"),
+            @ApiResponse(code = 400, message = "Provided file is not a valid image file"),
+            @ApiResponse(code = 500, message = "Failed to invert image file")
     })
     @ApiImplicitParams(value = {
             @ApiImplicitParam(
@@ -98,6 +102,10 @@ public class ImageInverterController extends Controller {
     }
 
     @ApiOperation(value = "Get an inverted image")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, response = File.class, message = "Found image"),
+            @ApiResponse(code = 404, message = "Image not found")
+    })
     public Result getImage(String imageFileName) {
         File file = Play.current().getFile(UPLOAD_PATH + imageFileName);
 
@@ -109,6 +117,10 @@ public class ImageInverterController extends Controller {
     }
 
     @ApiOperation(value = "Get all inverted images")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, response = List.class, message = "Found image"),
+            @ApiResponse(code = 404, message = "No inverted image files yet")
+    })
     public Result getAllImages() throws JsonProcessingException {
         File[] files = Play.current().getFile(UPLOAD_PATH).listFiles();
 
