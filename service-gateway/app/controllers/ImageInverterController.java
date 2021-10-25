@@ -18,6 +18,8 @@ import scala.compat.java8.FutureConverters;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -36,9 +38,9 @@ public class ImageInverterController extends Controller {
         imageInverterActor = actorSystem.actorOf(ImageInverterActor.getProps());
     }
 
-    @ApiOperation(value = "Upload image to invert")
+    @ApiOperation(value = "Upload and invert an image")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Image inverted")
+            @ApiResponse(code = 200, response = SuccessResponse.class, message = "Image inverted successfully")
     })
     @ApiImplicitParams(value = {
             @ApiImplicitParam(
@@ -95,7 +97,7 @@ public class ImageInverterController extends Controller {
         }
     }
 
-    @ApiOperation(value = "Get inverted image")
+    @ApiOperation(value = "Get an inverted image")
     public Result getImage(String imageFileName) {
         File file = Play.current().getFile(UPLOAD_PATH + imageFileName);
 
@@ -104,6 +106,21 @@ public class ImageInverterController extends Controller {
         }
         else
             return notFound("Image not found");
+    }
+
+    @ApiOperation(value = "Get all inverted images")
+    public Result getAllImages() throws JsonProcessingException {
+        File[] files = Play.current().getFile(UPLOAD_PATH).listFiles();
+
+        if (files == null || files.length == 0)
+            return notFound("No inverted image files yet");
+        else {
+            List<String> list = new ArrayList<>();
+            for (File file : files)
+                list.add(file.getPath().substring(file.getPath().lastIndexOf("/") + 1));
+
+            return ok(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(list));
+        }
     }
 
     private static class SuccessResponse {
