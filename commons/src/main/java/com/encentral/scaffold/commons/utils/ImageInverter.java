@@ -37,8 +37,7 @@ public class ImageInverter {
                 }
             }
 
-            ImageIO.write(bufferedImage, "jpg", destination);
-            return true;
+            return ImageIO.write(bufferedImage, "png", destination);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
