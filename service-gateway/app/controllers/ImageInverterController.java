@@ -1,15 +1,14 @@
 package controllers;
 
-import actors.ImageInverterActor;
-import actors.ImageInverterActorProtocol;
+import akka.actor.Actor;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import static akka.pattern.Patterns.ask;
-
+import com.encentral.image_inverter.actors.ImageInverterActor;
+import com.encentral.image_inverter.actors.ImageInverterActorProtocol;
+import com.encentral.image_inverter.api.ImageInverter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
-import io.swagger.util.Json;
 import play.api.Play;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -25,6 +24,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
+import static akka.pattern.Patterns.ask;
+
 @Singleton
 @Api(value = "Image Inverter")
 public class ImageInverterController extends Controller {
@@ -35,8 +36,9 @@ public class ImageInverterController extends Controller {
     final ObjectMapper objectMapper = new ObjectMapper();
 
     @Inject
-    public ImageInverterController(ActorSystem actorSystem) {
+    public ImageInverterController(ActorSystem actorSystem, ImageInverter imageInverter) {
         imageInverterActor = actorSystem.actorOf(ImageInverterActor.getProps());
+        imageInverterActor.tell(imageInverter, Actor.noSender());
     }
 
     @ApiOperation(value = "Upload and invert an image")

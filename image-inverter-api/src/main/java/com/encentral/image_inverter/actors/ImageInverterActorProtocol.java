@@ -1,4 +1,4 @@
-package actors;
+package com.encentral.image_inverter.actors;
 
 import java.io.File;
 
